@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Video</title>
+<style>
+  :root { --bg:#16191e; --fg:#eceef1; color-scheme: dark; }
+  html, body { height:100%; margin:0; }
+  body {
+    background:var(--bg); color:var(--fg);
+    font-family: Georgia, "Times New Roman", serif;
+    display:flex; align-items:center; justify-content:center;
+  }
+  #video {
+    width:854px; max-width:94vw; aspect-ratio:854 / 480;
+    background:#000; display:block;
+    pointer-events:none;   /* el usuario no puede interactuar */
+    user-select:none;
+  }
+  #btn {
+    display:none;
+    font:inherit; font-size:1rem; letter-spacing:.12em;
+    color:var(--fg); background:transparent;
+    border:2px solid var(--fg); border-radius:0;
+    padding:.8rem 2.5rem; cursor:pointer;
+  }
+  #btn:hover, #btn:focus-visible { background:var(--fg); color:var(--bg); outline:none; }
+</style>
+</head>
+<body oncontextmenu="return false">
+
+<video id="video" src="video.mp4" width="854" height="480"
+       autoplay muted playsinline preload="auto"
+       disablepictureinpicture disableremoteplayback
+       controlslist="nodownload nofullscreen noremoteplayback"
+       tabindex="-1"></video>
+
+<button id="btn" type="button">CONTINUAR</button>
+
+<script>
+  // ===== Configuración =====
+  const NEXT_PAGE = "https://docs.google.com/forms/d/e/1FAIpQLSd0uns6JGFgkeRdNWTY_HYRoSDfXafDdIXFBqs-lNZV-I8uZQ/viewform?usp=header"; // página de destino
+  // ==========================
+
+  const video = document.getElementById("video");
+  const btn = document.getElementById("btn");
+
+  video.muted = true;
+  video.controls = false;
+  video.addEventListener("pause", () => { if (!video.ended) video.play(); }); // no se puede pausar
+  video.addEventListener("ended", () => {
+    video.style.display = "none";
+    btn.style.display = "block";
+  });
+  btn.addEventListener("click", () => { window.location.href = NEXT_PAGE; });
+</script>
+</body>
+</html>
